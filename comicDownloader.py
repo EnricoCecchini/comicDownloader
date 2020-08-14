@@ -31,7 +31,7 @@ def recieveInput():
         print('Invalid URL format, default will be selected')
         urlFormat = 1
 
-    return url, name, comicLength, linkType
+    return url, name, comicLength, urlFormat 
 
 # Function to download comic
 def downloadComic(url, name, comicLength, urlFormat):
