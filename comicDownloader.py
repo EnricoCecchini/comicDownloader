@@ -23,10 +23,18 @@ def recieveInput():
     # Length of comic for Loop
     comicLength = int(input('Amount of pages: '))
 
-    return url, name, comicLength
+    # User inputs type URL format
+    urlFormat = int(input('If page number in URL is written as /#, type 1, if it\'s written as -##, type 2: '))
+
+    # Checks that URL format introduced by user is valid, if not default format is selected
+    if urlFormat != 1 or urlFormat != 2:
+        print('Invalid URL format, default will be selected')
+        urlFormat = 1
+
+    return url, name, comicLength, linkType
 
 # Function to download comic
-def downloadComic(url, name, comicLength):
+def downloadComic(url, name, comicLength, urlFormat):
     # Loop to iterate through all the pages of the comic
     for i in range(comicLength + 1):
         # Breaks loop if i reaches comicLength so empty page is not created
@@ -37,19 +45,38 @@ def downloadComic(url, name, comicLength):
 
         # Splits URL at . to add new page number
         newURL = url.rsplit('.', 1)
-        # Adds page number to iterate to next page
-        if j < 10:
-            newURL[0] = newURL[0][:-1] + str(j) + '.'
-        elif j < 100:
-            if j == 10:
-                newURL[0] = newURL[0][:-2] + '/' + str(j) + '.'
+
+        # Cheks URL page number format
+        # If page number in URL is written as: /#
+        if urlFormat == 1:
+            # Adds page number to iterate to next page
+            if j < 10:
+                newURL[0] = newURL[0][:-1] + str(j) + '.'
+            elif j < 100:
+                if j == 10:
+                    newURL[0] = newURL[0][:-2] + '/' + str(j) + '.'
+                else:
+                    newURL[0] = newURL[0][:-2] + str(j) + '.'
             else:
-                newURL[0] = newURL[0][:-2] + str(j) + '.'
+                if j == 100:
+                    newURL[0] = newURL[0][:-3] + '/' + str(j) + '.'
+                else:     
+                    newURL[0] = newURL[0][:-3] + str(j) + '.'
+        # If page number in URL is written as -#
         else:
-            if j == 100:
-                newURL[0] = newURL[0][:-3] + '/' + str(j) + '.'
-            else:     
-                newURL[0] = newURL[0][:-3] + str(j) + '.'
+            # Adds page number to iterate to next page
+            if j < 10:
+                newURL[0] = newURL[0][:-1] + str(j) + '.'
+            elif j < 100:
+                if j == 10:
+                    newURL[0] = newURL[0][:-2] + str(j) + '.'
+                else:
+                    newURL[0] = newURL[0][:-2] + str(j) + '.'
+            else:
+                if j == 100:
+                    newURL[0] = newURL[0][:-3] + str(j) + '.'
+                else:     
+                    newURL[0] = newURL[0][:-3] + str(j) + '.'
 
         # combines split URL and saves URL with new page number
         url = ''.join(newURL)
@@ -76,16 +103,16 @@ next = True
 # Main method to run program until user quits
 while next is True:
     # Calls recieveInput function to recieve comic URL, name and length from user
-    url, name, comicLength = recieveInput()
+    url, name, comicLength, urlFormat= recieveInput()
 
     # Calls makeFolder method to create folder to store comic
     makeFolder(name)
 
     # Calls downloadComic function and sends URL, name and length to download comic and store in folder
-    downloadComic(url, name, comicLength)
+    downloadComic(url, name, comicLength, urlFormat)
 
     # Asks user to download new comic
-    again = input('Download another comic? y/n').lower()
+    again = input('Download another comic? y/n: ').lower()
 
     # If user answer is 'n' program is over
     if again == 'n':
