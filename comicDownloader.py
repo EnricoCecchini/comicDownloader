@@ -6,13 +6,6 @@ import requests
 # import module to create directory/folder to store comic
 import os
 
-# Get page
-# requests.get('url')
-
-# Writes content from request to png file (downloads image)
-# with open('comic.png', 'wb') as f:
-#     f.write(r.content)
-
 # Function to recieve input from user
 def recieveInput():
     # input comic URL of 1st page
@@ -24,12 +17,15 @@ def recieveInput():
     comicLength = int(input('Amount of pages: '))
 
     # User inputs type URL format
-    urlFormat = int(input('If page number in URL is written as /#, type 1, if it\'s written as -##, type 2: '))
+    urlFormat = 0
+    while True:
+        formato = input('Page number as /#, type 1 \nPage numeber as -##, type 2 \nPage number as _##, type 3\nFormat: ')
+        urlFormat = int(formato)
 
-    # Checks that URL format introduced by user is valid, if not default format is selected
-    if urlFormat != 1 or urlFormat != 2:
-        print('Invalid URL format, default will be selected')
-        urlFormat = 1
+        if urlFormat == 1 or urlFormat == 2 or urlFormat == 3:
+            break
+        else:
+            print('Invalid format')
 
     return url, name, comicLength, urlFormat 
 
@@ -63,18 +59,33 @@ def downloadComic(url, name, comicLength, urlFormat):
                 else:     
                     newURL[0] = newURL[0][:-3] + str(j) + '.'
         # If page number in URL is written as -#
-        else:
+        elif urlFormat == 2:
             # Adds page number to iterate to next page
             if j < 10:
                 newURL[0] = newURL[0][:-1] + str(j) + '.'
             elif j < 100:
                 if j == 10:
-                    newURL[0] = newURL[0][:-2] + str(j) + '.'
+                    newURL[0] = newURL[0][:-2] + '-' + str(j) + '.'
                 else:
                     newURL[0] = newURL[0][:-2] + str(j) + '.'
             else:
                 if j == 100:
+                    newURL[0] = newURL[0][:-3] + '-' + str(j) + '.'
+                else:     
                     newURL[0] = newURL[0][:-3] + str(j) + '.'
+        
+        elif urlFormat == 3:
+            # Adds page number to iterate to next page
+            if j < 10:
+                newURL[0] = newURL[0][:-1] + str(j) + '.'
+            elif j < 100:
+                if j == 10:
+                    newURL[0] = newURL[0][:-2] + '_' + str(j) + '.'
+                else:
+                    newURL[0] = newURL[0][:-2] + str(j) + '.'
+            else:
+                if j == 100:
+                    newURL[0] = newURL[0][:-3] + '_' + str(j) + '.'
                 else:     
                     newURL[0] = newURL[0][:-3] + str(j) + '.'
 
@@ -88,7 +99,7 @@ def downloadComic(url, name, comicLength, urlFormat):
         r = requests.get(url)
 
         # Saves comic page as PNG
-        with open(f'{name}/{name} pg{j}.png', 'wb') as f:
+        with open(f'{name}/{name} pg{j}.jpg', 'wb') as f:
             f.write(r.content)
 
 # Function to create new folder to store comic
@@ -117,3 +128,5 @@ while next is True:
     # If user answer is 'n' program is over
     if again == 'n':
         next = False
+
+    os.system('cls')
