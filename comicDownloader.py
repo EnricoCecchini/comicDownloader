@@ -6,13 +6,6 @@ import requests
 # import module to create directory/folder to store comic
 import os
 
-# Get page
-# requests.get('url')
-
-# Writes content from request to png file (downloads image)
-# with open('comic.png', 'wb') as f:
-#     f.write(r.content)
-
 # Function to recieve input from user
 def recieveInput():
     # input comic URL of 1st page
@@ -33,9 +26,6 @@ def recieveInput():
             urlFormat = 2
         elif '_01.jpg' in url or '_01.png' in url:
             urlFormat = 3
-
-        #formato = input('Page number as /#, type 1 \nPage numeber as -##, type 2 \nPage number as _##, type 3\nFormat: ')
-        #urlFormat = int(formato)
 
         if urlFormat == 1 or urlFormat == 2 or urlFormat == 3:
             break
@@ -73,7 +63,7 @@ def downloadComic(url, name, comicLength, urlFormat):
                     newURL[0] = newURL[0][:-3] + '/' + str(j) + '.'
                 else:     
                     newURL[0] = newURL[0][:-3] + str(j) + '.'
-        # If page number in URL is written as -#
+        # If page number in URL is written as -##
         elif urlFormat == 2:
             # Adds page number to iterate to next page
             if j < 10:
@@ -89,6 +79,7 @@ def downloadComic(url, name, comicLength, urlFormat):
                 else:     
                     newURL[0] = newURL[0][:-3] + str(j) + '.'
         
+        # If page number in URL is written as _##
         elif urlFormat == 3:
             # Adds page number to iterate to next page
             if j < 10:
@@ -144,4 +135,5 @@ while next is True:
     if again == 'n':
         next = False
 
+    # Clear Terminal when downloading a new comic
     os.system('cls')
