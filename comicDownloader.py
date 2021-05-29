@@ -6,6 +6,13 @@ import requests
 # import module to create directory/folder to store comic
 import os
 
+# Get page
+# requests.get('url')
+
+# Writes content from request to png file (downloads image)
+# with open('comic.png', 'wb') as f:
+#     f.write(r.content)
+
 # Function to recieve input from user
 def recieveInput():
     # input comic URL of 1st page
@@ -13,14 +20,22 @@ def recieveInput():
 
     # input comic name
     name = input('Comic Name: ')
+    name = name.replace('/',' ')
     # Length of comic for Loop
     comicLength = int(input('Amount of pages: '))
 
     # User inputs type URL format
     urlFormat = 0
     while True:
-        formato = input('Page number as /#, type 1 \nPage numeber as -##, type 2 \nPage number as _##, type 3\nFormat: ')
-        urlFormat = int(formato)
+        if '/1.jpg' in url or '/1.png' in url:
+            urlFormat = 1
+        elif '-01.jpg' in url or '-01.png' in url:
+            urlFormat = 2
+        elif '_01.jpg' in url or '_01.png' in url:
+            urlFormat = 3
+
+        #formato = input('Page number as /#, type 1 \nPage numeber as -##, type 2 \nPage number as _##, type 3\nFormat: ')
+        #urlFormat = int(formato)
 
         if urlFormat == 1 or urlFormat == 2 or urlFormat == 3:
             break
