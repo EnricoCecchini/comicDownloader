@@ -1,5 +1,5 @@
 1 - Open 1st page of comic in web browser
-2 - Right click page an select 'Open image in new window'
+2 - Right click the image of the first page and select 'Copy Image Address'
 3 - Make sure the link contains the page number, and that by changin it and reloading, you can change page
     Example: https://readcomicsonline.ru/uploads/manga/deadpool-kills-the-marvel-universe-again-2017-/chapters/5/01.jpg
     By changin the 01 at the end of the link, you can change pages

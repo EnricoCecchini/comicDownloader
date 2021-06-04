@@ -9,7 +9,21 @@ import os
 # Function to recieve input from user
 def recieveInput():
     # input comic URL of 1st page
-    url = input('Comic URL: ')
+    while True:
+        url = input('Comic URL: ')
+
+        try:
+            requests.get(url)
+            break
+        except requests.exceptions.MissingSchema:
+            print("Invalid URL")
+        except requests.ConnectionError:
+            print("Invalid URL")
+    
+    # Clear Terminal when downloading a new comic
+    os.system('cls')
+
+    print(f'URL: {url}')
 
     # input comic name
     name = input('Comic Name: ')
@@ -20,7 +34,7 @@ def recieveInput():
     # User inputs type URL format
     urlFormat = 0
     while True:
-        if '/1.jpg' in url or '/1.png' in url:
+        if '/1.jpg' in url or '/1.png' in url or '/01.jpg' in url or '/01.png':
             urlFormat = 1
         elif '-01.jpg' in url or '-01.png' in url:
             urlFormat = 2
