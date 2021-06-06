@@ -28,8 +28,6 @@ def recieveInput():
     # input comic name
     name = input('Comic Name: ')
     name = name.replace('/',' ')
-    # Length of comic for Loop
-    comicLength = int(input('Amount of pages: '))
 
     # User inputs type URL format
     urlFormat = 0
@@ -46,18 +44,13 @@ def recieveInput():
         else:
             print('Invalid format')
 
-    return url, name, comicLength, urlFormat 
+    return url, name, urlFormat 
 
 # Function to download comic
-def downloadComic(url, name, comicLength, urlFormat):
+def downloadComic(url, name, urlFormat):
+    j = 1
     # Loop to iterate through all the pages of the comic
-    for i in range(comicLength + 1):
-        # Breaks loop if i reaches comicLength so empty page is not created
-        if i == comicLength:
-            break
-        # Increases page counter by 1 so Page doesn't start at 0
-        j = i+1
-
+    while True:
         # Splits URL at . to add new page number
         newURL = url.rsplit('.', 1)
 
@@ -118,9 +111,14 @@ def downloadComic(url, name, comicLength, urlFormat):
         # Sends request to recieve data from webpage
         r = requests.get(url)
 
-        # Saves comic page as PNG
-        with open(f'{name}/{name} pg{j}.jpg', 'wb') as f:
-            f.write(r.content)
+        # Check if page exists, if not, break
+        if r.status_code == 404:
+            break
+        else:
+            # Saves comic page as PNG
+            with open(f'{name}/{name} pg{j}.jpg', 'wb') as f:
+                f.write(r.content)        
+        j+=1
 
 # Function to create new folder to store comic
 def makeFolder(name):
@@ -134,13 +132,13 @@ next = True
 # Main method to run program until user quits
 while next is True:
     # Calls recieveInput function to recieve comic URL, name and length from user
-    url, name, comicLength, urlFormat= recieveInput()
+    url, name, urlFormat= recieveInput()
 
     # Calls makeFolder method to create folder to store comic
     makeFolder(name)
 
     # Calls downloadComic function and sends URL, name and length to download comic and store in folder
-    downloadComic(url, name, comicLength, urlFormat)
+    downloadComic(url, name, urlFormat)
 
     # Asks user to download new comic
     again = input('Download another comic? y/n: ').lower()
