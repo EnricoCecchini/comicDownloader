@@ -27,7 +27,7 @@ def recieveInput():
 
     # input comic name
     name = input('Comic Name: ')
-    name = re.sub('/',' ').replace("?",'')
+    name = name.replace('/',' ').replace("?",'')
 
     # User inputs type URL format
     urlFormat = 0
