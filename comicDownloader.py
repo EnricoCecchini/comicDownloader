@@ -3,6 +3,8 @@
 # import Request module to interact with web pages
 import requests
 
+import re
+
 # import module to create directory/folder to store comic
 import os
 
@@ -27,7 +29,7 @@ def recieveInput():
 
     # input comic name
     name = input('Comic Name: ')
-    name = name.replace('/',' ')
+    name = re.sub('/',' ').replace("?",'')
 
     # User inputs type URL format
     urlFormat = 0
@@ -112,6 +114,16 @@ def downloadComic(url, name, urlFormat):
         r = requests.get(url)
 
         # Check if page exists, if not, break
+        if r.status_code == 404 and '.jpg' in url:
+            url = url.replace('.jpg', '.png')
+            r = requests.get(url)
+        
+        if r.status_code == 404 and '.png' in url:
+            url = url.replace('.png', '.jpg')
+            r = requests.get(url)
+
+        #print(f"TEST: {url}")
+        
         if r.status_code == 404:
             break
         else:
