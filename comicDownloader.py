@@ -3,8 +3,6 @@
 # import Request module to interact with web pages
 import requests
 
-import re
-
 # import module to create directory/folder to store comic
 import os
 
