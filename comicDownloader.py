@@ -126,8 +126,13 @@ def downloadComic(url, name, urlFormat):
             break
         else:
             # Saves comic page as PNG
-            with open(f'{name}/{name} pg{j}.jpg', 'wb') as f:
-                f.write(r.content)        
+            if '.gif' in url:
+                with open(f'{name}/{name} pg{j}.gif', 'wb') as f:
+                    f.write(r.content)    
+
+            else:
+                with open(f'{name}/{name} pg{j}.jpg', 'wb') as f:
+                    f.write(r.content)        
         j+=1
 
 # Function to create new folder to store comic
