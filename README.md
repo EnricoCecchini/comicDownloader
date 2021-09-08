@@ -18,8 +18,6 @@ Instructions:
 
 5 - Type the name of the comic (This will also be the name of the folder where the comic will be stored)
 
-6 - Type the amount of pages the comic has
-
 *If you want to download another comic, simply type 'y' when prompted*
 *The comic will be downloaded wherever the python file is located*
 *Program should work even for comics with 100+ pages*
